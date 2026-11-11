@@ -20,6 +20,7 @@ FRAME_DURATION_MS = 30
 FRAME_BYTES = SAMPLE_RATE * FRAME_DURATION_MS // 1000 * 2
 VAD_WINDOW_FRAMES = 10
 VAD_REQUIRED_SPEECH_FRAMES = 8
+MIN_SPEECH_FRAMES = 5
 
 
 class Listener:
@@ -52,6 +53,9 @@ class Listener:
         )
 
     def _record_utterance(self) -> np.ndarray:
+        # Silero keeps recurrent context between calls; each microphone pass
+        # must start with a clean context after the previous utterance ends.
+        self._vad.reset_states()
         command = [
             "arecord",
             "--quiet",
@@ -134,7 +138,7 @@ class Listener:
                     recording_frames += 1
                     silence_count = VAD_WINDOW_FRAMES - sum(vad_results)
                     if (
-                        recording_frames >= VAD_WINDOW_FRAMES
+                        recording_frames >= MIN_SPEECH_FRAMES
                         and len(vad_results) == VAD_WINDOW_FRAMES
                         and silence_count >= VAD_REQUIRED_SPEECH_FRAMES
                     ):
