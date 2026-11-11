@@ -1,0 +1,12 @@
+[project]
+name = "whisper"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "faster-whisper>=1.2.1",
+    "rapidfuzz>=3.14.6",
+    "roslibpy>=2.1.0",
+    "silero-vad>=6.2.3",
+]
