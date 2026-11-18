@@ -1,5 +1,8 @@
 """Capture microphone audio and transcribe it with faster-whisper."""
 
+#シミュレーション上にはロボットにマイクがないため、PCの音声入力を使っています。
+#実機で動かす際は、rasberrypiのマイクをros2（std_msgs/msg/UInt8MultiArray）で送って、PCが受け取る感じになります（改造必要）
+
 from __future__ import annotations
 
 import logging
